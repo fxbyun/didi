@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC 
+"-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="BetGroupPlan" type="com.aicai.dao.example.domain.BetGroupPlan" />
+	</typeAliases>
+	<typeHandlers>
+	    <typeHandler handler="com.aicai.dao.example.domain.typehandler.GameHandler" javaType="com.aicai.dao.example.domain.Game" />
+	</typeHandlers> 
+
+	<mappers>
+		<mapper resource="mybatisConfig/mapper/BetPlan-oracle.xml" />
+	</mappers>
+</configuration> 

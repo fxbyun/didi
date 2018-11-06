@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="GameIssueDao">
+	<resultMap id="BaseResultMap" type="GameIssue">
+		<id property="id" column="id" />
+		<result property="issueNo" column="issue_no" />
+		<result property="game" column="game_id" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="openTime" column="open_time" />
+		<result property="isCurrent" column="is_current" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	
+    <select id="sequences" resultType="long">
+       select seq_bet_game_issue.nextVal from dual
+    </select>
+
+
+</mapper>

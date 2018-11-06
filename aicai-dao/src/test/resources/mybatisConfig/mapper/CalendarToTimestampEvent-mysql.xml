@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="CalendarToTimestampEventDao">
+	<resultMap id="BaseResultMap" type="CalendarEvent">
+		<id property="id" column="id" />
+		<result property="createTime" column="create_time" />
+		<result property="updateTime" column="update_time" />
+	</resultMap>
+
+	<sql id="All_Column_List">
+		id, create_time, update_time
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="All_Column_List" />
+		from calendar_to_timestamp
+		where id = #{id}
+	</select>
+
+
+	<insert id="insertAndReturnAffectedCount" parameterType="CalendarEvent">
+	<![CDATA[
+insert	into calendar_to_timestamp (
+	id,
+	create_time,
+	update_time
+	)
+values (
+	#{id},
+	#{createTime},
+	#{updateTime}
+)]]>
+	</insert>
+
+
+	<update id="updateByMap" parameterType="map">
+		update
+		calendar_to_timestamp
+		set update_time = #{updateTime}
+		where id =
+		#{id}
+	</update>
+<!--
+	<update id="updateByObj" parameterType="CalendarEvent">
+		update
+		calendar_to_datetime_autoid
+		set update_time = #{updateTime}
+		where id =
+		#{id}
+	</update>
+
+	<update id="updateByMapMix" parameterType="map">
+		update
+		calendar_to_datetime_autoid
+		set update_time = #{updateTime}
+		where id =
+		#{event.id}
+	</update>
+	  -->
+</mapper>

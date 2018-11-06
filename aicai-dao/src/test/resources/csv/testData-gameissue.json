@@ -1,0 +1,7 @@
+{
+	"csvCharset": "UTF-8",
+	"csvPathBeforeTest": "/csv/gameissue.csv",
+	"idColumn": "id",
+	"tableName": "bet_game_issue",
+	"dbType": "oracle",
+}

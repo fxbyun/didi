@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="BetPlanDao">
+	<resultMap id="BetGroupPlanResultMap" type="BetGroupPlan">
+		<id property="id" column="id" />
+		<result property="planNo" column="plan_no" />
+		<result property="memberId" column="member_id" />
+		<result property="account" column="account" />
+		<result property="issueNo" column="issue_no" />
+		<result property="game" column="game_id" />
+		<result property="parentGame" column="parent_game_id" />
+		<result property="orderId" column="order_id" />
+		<result property="orderNo" column="order_no" />
+		<result property="amount" column="amount" />
+		<result property="multiple" column="multiple" />
+		<result property="betCount" column="bet_count" />
+		<result property="betType" column="bet_type" />
+		<result property="playTypeDesc" column="play_type_desc" />
+		<result property="selectType" column="select_type" />
+		<result property="minTimePoint" column="min_time_point" />
+		<result property="maxRaceId" column="max_race_id" />
+		<result property="raceNo" column="race_no" />
+		<result property="floatAward" column="float_award" />
+		<result property="upload" column="upload" />
+		<result property="uploadTime" column="upload_time" />
+		<result property="printStopTime" column="print_stop_time" />
+		<result property="hotStatus" column="hot_status" />
+		<result property="createTime" column="create_time" />
+		<result property="title" column="title" />
+		<result property="introduce" column="introduce" />
+		<result property="perAmount" column="per_amount" />
+		<result property="part" column="part" />
+		<result property="soldPart" column="sold_part" />
+		<result property="reservePart" column="reserve_part" />
+		<result property="minFollowAmount" column="min_follow_amount" />
+		<result property="joinEndTime" column="join_end_time" />
+		<result property="isFollow" column="is_follow" />
+		<result property="publicType" column="public_type" />
+		<result property="planStatus" column="plan_status" />
+		<result property="prizeDeduct" column="prize_deduct" />
+		<result property="joinPerson" column="join_person" />
+		<result property="payBack" column="pay_back" />
+		<result property="topLocation" column="top_location" />
+		<result property="viewCount" column="view_count" />
+		<result property="luckValue" column="luck_value" />
+	</resultMap>
+
+	<sql id="BetGroupPlan_ColumnList">
+		id,plan_no,member_id,account,issue_no,game_id,parent_game_id,order_id,order_no,
+		amount,multiple,bet_count,bet_type,play_type_desc,select_type,min_time_point,max_race_id,race_no,float_award,
+		upload,upload_time,print_stop_time,hot_status,create_time,
+		title,introduce,per_amount,part,sold_part,reserve_part,min_follow_amount,join_end_time,
+		is_follow,public_type,plan_status,prize_deduct,join_person,pay_back,top_location,view_count,luck_value
+	</sql>
+
+	<select id="selectAll" resultMap="BetGroupPlanResultMap">
+		select
+		id,issue_no,game_id,start_time, end_time, is_current
+		from game_issue
+	</select>
+
+	<select id="selectBetGroupPlanByPrimaryKey" resultMap="BetGroupPlanResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="BetGroupPlan_ColumnList" />
+		from bet_plan
+		where id = #{id}
+	</select>
+
+	<select id="selectListByStatus" resultMap="BetGroupPlanResultMap"
+		parameterType="java.lang.Long">
+	select <include refid="BetGroupPlan_ColumnList" /> 
+		     from bet_game_issue t,
+				(select rid from 
+					(select rownum rn, t2.rid from 
+		   		<![CDATA[(select rowid rid from bet_game_issue t1 where start_time > #{startTime} and game_id = #{gameId} and status = #{status} order by start_time asc) t2 
+				 			where rownum <= #{endIndex}) t3 where rn > #{startIndex}) t4]]>
+			 where t4.rid = t.rowid
+	</select>
+
+	<insert id="insert" parameterType="BetGroupPlan">
+		insert into
+		bet_plan (
+		<include refid="BetGroupPlan_ColumnList" />
+		)
+		values (
+		#{id},
+		#{planNo},
+		#{member},
+		#{account},
+		#{game},
+		#{parentGame},
+		#{issueNo},
+		#{amount},
+		#{multiple},
+		#{betCount},
+		#{betType},
+		#{playTypeDesc},
+		#{selectType},
+		#{order},
+		#{orderNo},
+		#{minTimePoint},
+		#{maxRaceId},
+		#{raceNo},
+		#{floatAward},
+		#{upload},
+		#{uploadTime},
+		#{printStopTime},
+		#{hotStatus},
+		#{createTime},
+		#{title},
+		#{introduce},
+		#{perAmount},
+		#{part},
+		#{soldPart},
+		#{reservePart},
+		#{minFollowAmount},
+		#{joinEndTime},
+		#{isFollow},
+		#{publicType},
+		#{planStatus},
+		#{prizeDeduct},
+		#{joinPerson},
+		#{payBack},
+		#{topLocation},
+		#{viewCount},
+		#{luckValue}
+		)
+	</insert>
+</mapper>

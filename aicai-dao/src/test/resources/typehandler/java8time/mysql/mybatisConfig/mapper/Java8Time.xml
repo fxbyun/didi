@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="Java8TimeDao">
+	<resultMap id="BaseResultMap" type="Java8Time">
+		<id property="id" column="id" />
+		<result property="instant" column="instant" />
+		<result property="localDateTime" column="local_date_time" />
+		<result property="localDate" column="local_date" />
+		<result property="localTime" column="local_time" />
+		<result property="offsetDateTime" column="offset_date_time" />
+		<result property="zonedDateTime" column="zoned_date_time" />
+		<result property="" column="" />
+	</resultMap>
+
+	<sql id="All_Column_List">
+		id, instant, local_date_time, local_date, local_time, offset_date_time, zoned_date_time 
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="All_Column_List" />
+		from java8_time 
+		where id = #{id}
+	</select>	
+
+	<insert id="insertAndReturnAffectedCount" parameterType="Java8Time">
+		<![CDATA[
+			insert	into java8_time (
+				instant,
+				local_date_time,
+				local_date,
+				local_time,
+				offset_date_time,
+				zoned_date_time
+				)
+			values (
+				#{instant},
+				#{localDateTime},
+				#{localDate},
+				#{localTime},
+				#{offsetDateTime},
+				#{zonedDateTime})
+	    ]]>
+	</insert>
+	
+</mapper>

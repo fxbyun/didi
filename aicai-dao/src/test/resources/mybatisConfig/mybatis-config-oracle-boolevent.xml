@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC 
+"-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="GameIssue" type="com.aicai.dao.example.domain.GameIssue" />
+		<typeAlias alias="Calendar" type="java.util.Calendar" />
+	</typeAliases>
+	<typeHandlers>
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.BooleanToIntHandler" javaType="java.lang.Boolean" />
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.CalendarTypeHandler" javaType="java.util.Calendar"/>
+	    <typeHandler handler="com.aicai.dao.mybatis.typehandler.CalendarTypeHandler" javaType="java.util.GregorianCalendar" />
+	    <typeHandler handler="com.aicai.dao.example.domain.typehandler.GameHandler" javaType="com.aicai.dao.example.domain.Game" />
+	</typeHandlers> 
+
+	<mappers>
+		<mapper resource="mybatisConfig/mapper/BetGameIssue-oracle.xml" />
+	</mappers>
+</configuration> 

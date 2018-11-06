@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-autowire="byName"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <description> 读写分离配置样例</description>
+
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:readwrite/jdbc_readwrite.properties"/>
+
+    <!--master 主(写)库配置-->
+    <bean name="masterDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="${master.dburl}" />
+        <property name="username" value="${master.dbusername}" />
+        <property name="password" value="${master.dbpassword}" />
+    </bean>
+
+    <bean name="writeSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="masterDataSource" />
+        <property name="configLocation" value="/mybatisConfig/readwrite/mybatis-config-readwrite.xml" />
+    </bean>
+
+    <bean name="writeTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="writeSqlSessionFactory" />
+    </bean>
+
+    <bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="masterDataSource" />
+    </bean>
+
+    <bean name="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"/>
+        <property name="isolationLevelName" value="ISOLATION_READ_UNCOMMITTED"/>
+        <property name="timeout" value="30"/>
+    </bean>
+
+    <!--slave 从(读)库配置-->
+    <bean name="slaveDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        <property name="url" value="${slave.dburl}" />
+        <property name="username" value="${slave.dbusername}" />
+        <property name="password" value="${slave.dbpassword}" />
+    </bean>
+   
+    <bean name="readSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="slaveDataSource" />
+        <property name="configLocation" value="/mybatisConfig/readwrite/mybatis-config-readwrite.xml" />
+    </bean>
+
+    <bean name="readTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="readSqlSessionFactory" />
+    </bean>
+
+    <bean name="readWriteDao" class="com.aicai.dao.readwrite.ReadWriteDao" init-method="init">
+        <property name="enableReadWrite" value="true"/><!-- 是否启用读写分离; 注：true: 启用; false： 不启用 -->
+        <property name="writeTemplate" ref="writeTemplate"/> <!-- 写与实时读SqlSessionTemplate; 注：走主库 -->
+        <property name="readTemplate" ref="readTemplate"/> <!-- 只读SqlSessionTemplate; 注：走从库 -->
+        <!--readRate:读比率; 约束条件为：1 <= readRate <= 9; 注：(1)readRate = ５表示走读库与写库的比例是1:1;(2)走读库的概率与readRate值成正比 -->
+        <property name="readRate" value="5"/> 
+    </bean>
+    
+    <bean name="studentManager" class="com.aicai.dao.readwrite.manager.StudentManager" />
+    
+    <bean name="studentReadService" class="com.aicai.dao.readwrite.service.impl.StudentReadServiceImpl" />
+    <bean name="studentWriteService" class="com.aicai.dao.readwrite.service.impl.StudentWriteServiceImpl" />
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+  		<property name="proxyTargetClass">
+			<value>true</value><!-- 注：因为我们的RealtimeForReadService注解是配置在ReadService的实现类的方法上面的，所以这里一定要配置成true -->
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<idref bean="readServiceAdvice"/>
+			</list>
+		</property>
+		<property name="beanNames">
+			<list>
+				<value>*ReadService</value><!-- 配置时请注意：其只能拦截ReadService，不能拦截WriteService，当然也不能拦截Manager等其它实现上，否则会有问题  -->
+			</list>
+		</property>
+	</bean>	
+
+	<bean id="readServiceAdvice" class="com.aicai.dao.readwrite.advice.ReadServiceAdvice" />
+</beans>

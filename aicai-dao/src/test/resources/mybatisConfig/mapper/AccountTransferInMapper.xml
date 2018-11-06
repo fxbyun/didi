@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AccountTransferInDao">
+	<resultMap id="BaseResultMap" type="AccountTransferInDO">
+		<id property="transferInId" column="transfer_in_id" />
+		<result property="toAccountId" column="to_account" />
+		<result property="amount" column="amount" />
+		<result property="upRelateType" column="up_relate_type" />
+		<result property="upRelateId" column="up_relate_id" />
+		<result property="status" column="status" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		transfer_in_id, to_account, amount, up_relate_type, up_relate_id, status
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from pay_account_transfer_in
+		where transfer_in_id = #{cashInId}
+	</select>
+
+	<insert id="insert" parameterType="AccountTransferInDO">
+		insert into pay_account_transfer_in (transfer_in_id, to_account, amount,
+		up_relate_type, up_relate_id, status)
+		values (#{transferInId}, #{toAccountId}, #{amount},
+		#{upRelateType}, #{upRelateId}, #{status})
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="java.util.Map">
+		update pay_account_transfer_in
+		set status = #{status}
+		where transfer_in_id = #{cashInId}
+	</update>
+</mapper>

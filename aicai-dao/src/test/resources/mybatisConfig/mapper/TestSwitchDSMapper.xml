@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TestSwitchDSDao">
+
+    <select id="queryStudent" resultType="map">
+        select * from student
+    </select>
+
+    <select id="queryStudentByNumber" resultType="map" parameterType="map">
+        select * from student where number = #{number}
+    </select>
+
+    <insert id="insertNewStudent" keyColumn="id" useGeneratedKeys="true" parameterType="map">
+        insert into student(name,number) values (#{name}, #{number})
+    </insert>
+
+    <update id="updateStudent" parameterType="map">
+        update student set name = #{name} where number = #{number}
+    </update>
+
+    <delete id="clearData">
+        delete from student
+    </delete>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC 
+"-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="CalendarEvent" type="com.aicai.dao.example.domain.CalendarEvent"/>
+	</typeAliases>
+	
+	<typeHandlers>
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.CalendarTypeHandler" javaType="java.util.Calendar" />
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.CalendarTypeHandler" javaType="java.util.GregorianCalendar" />
+	</typeHandlers>
+	
+	<mappers>
+		<mapper resource="mybatisConfig/mapper/CalendarEvent-mysql.xml" />
+	</mappers>
+</configuration> 

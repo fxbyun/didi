@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC 
+"-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="Calendar" type="java.util.Calendar" />
+		<typeAlias alias="Boolean" type="java.lang.Boolean" />
+		<typeAlias alias="DateTime" type="org.joda.time.DateTime" />
+		<typeAlias alias="AccountTransferInDO"
+			type="com.aicai.dao.example.domain.AccountTransferInDO" />
+		<typeAlias alias="AccountTransferOutDO"
+			type="com.aicai.dao.example.domain.AccountTransferOutDO" />
+		<typeAlias alias="JodaGameIssue" type="com.aicai.dao.example.domain.JodaGameIssue" />
+	</typeAliases>
+
+	<typeHandlers>
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.JodaTypehandler"
+			javaType="org.joda.time.DateTime" />
+		<typeHandler handler="com.aicai.dao.example.domain.typehandler.GameHandler"
+			javaType="com.aicai.dao.example.domain.Game" />
+	</typeHandlers>
+
+	<mappers>
+		<mapper resource="mybatisConfig/mapper/GameIssue-mysql-joda.xml" />
+	</mappers>
+</configuration> 

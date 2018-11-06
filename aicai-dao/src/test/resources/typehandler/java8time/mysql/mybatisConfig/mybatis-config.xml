@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC 
+"-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias alias="Java8Time" type="com.aicai.dao.mybatis.typehandler.java8time.domain.Java8Time"/>
+	</typeAliases>
+	
+	<typeHandlers>
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.java8time.InstantTypeHandler" javaType="java.time.Instant" />
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.java8time.LocalDateTimeTypeHandler" javaType="java.time.LocalDateTime" />
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.java8time.LocalDateTypeHandler" javaType="java.time.LocalDate" />
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.java8time.LocalTimeTypeHandler" javaType="java.time.LocalTime" />
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.java8time.OffsetDateTimeTypeHandler" javaType="java.time.OffsetDateTime" />
+		<typeHandler handler="com.aicai.dao.mybatis.typehandler.java8time.ZonedDateTimeTypeHandler" javaType="java.time.ZonedDateTime" />
+	</typeHandlers>
+	
+	<mappers>
+		<mapper resource="typehandler/java8time/mysql/mybatisConfig/mapper/Java8Time.xml" />
+	</mappers>
+</configuration> 

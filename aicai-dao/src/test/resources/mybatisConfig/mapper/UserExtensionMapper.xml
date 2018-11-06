@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="UserExtensionMapper">
+    <resultMap id="BaseResultMap" type="UserExtension">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="password" column="password" />
+        <result property="features" column="features" />
+        <result property="featuresVersion" column="features_version" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, name, password, features, features_version
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from user_extension
+        where id = #{id}
+    </select>
+    
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+            <include refid="Base_Column_List" />
+        from user_extension
+    </select>
+    
+    <insert id="insert" parameterType="UserExtension" useGeneratedKeys="true" keyProperty="id">
+        insert into user_extension
+        (name, password, features, features_version) 
+        values
+        (#{name},#{password},#{features},#{featuresVersion})
+    </insert>
+    
+    <update id="update" parameterType="UserExtension">
+        update user_extension set
+        name=#{name},password=#{password},features=#{features},features_version=#{featuresVersion}
+        where id=#{id}
+    </update>
+</mapper>

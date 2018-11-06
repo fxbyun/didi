@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="BoolEventDao">
+	<resultMap id="BaseResultMap" type="BoolEvent">
+		<id property="id" column="id" />
+		<result property="event" column="event" />
+	</resultMap>
+
+	<sql id="All_Column_List">
+		id, event
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Long">
+		select
+		<include refid="All_Column_List" />
+		from bool_to_int
+		where id = #{id}
+	</select>
+
+	<insert id="insertAndSetupId" parameterType="BoolEvent" useGeneratedKeys="true" keyProperty="id">
+		insert into bool_to_int (
+			event
+		)
+		values (
+			#{event}
+		)
+	</insert>
+	
+	<update id="updateByObj" parameterType="BoolEvent">
+		update bool_to_int
+		set event = #{event}
+		where id = #{id}
+	</update>
+</mapper>
